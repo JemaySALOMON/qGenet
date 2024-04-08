@@ -27,7 +27,7 @@ The data and slides for the Phenomic Selection Workshop are sourced from the "at
 
 * lmm.html: The output of lmm.Rmd.
 
-* Utils.R: This file contains utility functions used in the Rmd
+* Utils.R: This file contains utility functions used in the two Rmds
 
 
 
