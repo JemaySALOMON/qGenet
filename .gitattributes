@@ -1,0 +1,6 @@
+*.html linguist-detectable=false
+*.Rmd linguist-detectable=false
+*.odp linguist-detectable=false
+*.pdf linguist-detectable=false
+
+
