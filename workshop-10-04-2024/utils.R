@@ -1,5 +1,4 @@
 
-
 # Function to plot first and 2nd derivatives
 ##' @author  Jemay SALOMON 
 plotDeriv = function(X, lambda, derivatives, tsf = NULL)
@@ -120,7 +119,6 @@ computeSimilarity = function(X, geneticRel = TRUE){
 
 
 # Functions to calculate sigma error using h2 when simulating data
-##############################################################
 ##' @author  Jemay SALOMON
 sigmaE <- function(sigma, h2){
   if(!is.numeric(sigma)){
@@ -135,7 +133,6 @@ sigmaE <- function(sigma, h2){
 }
 
 # Functions to compute incidence matrix
-##############################################################
 ##' @author  Jemay SALOMON
 
 mkZ <- function(df, colD) {
