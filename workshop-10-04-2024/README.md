@@ -54,18 +54,18 @@ The data and slides for the Phenomic Selection Workshop are sourced from the "at
 * Install via command R/Rstudio :
 
 command R/RStudio :  install.packages()  
-									eg.: install.packages("rrBLUP") for rrBLUP  
-									     install.packages("lme4") for lme4  
+
+1) install.packages("knitr") for knitr   
+2) install.packages("prospectr") for prospectr  
+3) .... do the same for the other packages   
 
 
-Install via loop in R/Rstudio If it does not work, use the method above  
-
-packages <- c("knitr", "prospectr", "signal", "rrBLUP", "MM4LMM", "rmarkdown", "lme4")  
+* Install via loop in R/Rstudio If it does not work, use the method above (Install via command R/Rstudio)  
 
 ```{r}
 ## check if these packages are not already installed
 ## if not, install them
-
+packages <- c("knitr", "prospectr", "signal", "rrBLUP", "MM4LMM", "rmarkdown", "lme4")  
 for (package in packages) {
   if (!requireNamespace(package, quietly = TRUE)) {
     install.packages(package)
