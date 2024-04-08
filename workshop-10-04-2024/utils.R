@@ -1,5 +1,5 @@
 
-# Function to plot first and 2nd derivatives
+##' Function to plot first and 2nd derivatives
 ##' @author  Jemay SALOMON 
 plotDeriv = function(X, lambda, derivatives, tsf = NULL)
 {
@@ -78,8 +78,7 @@ MAF =  function(X, lower, upper) {
 }
 
 
-# Function to compute genetic relatedness or hyperspectral similarity
-##' Compute Kinship <<method vanraden>>
+##' Function to compute genetic relatedness or hyperspectral similarity
 ##' @author  Jemay SALOMON
 computeSimilarity = function(X, geneticRel = TRUE){
   
@@ -118,7 +117,7 @@ computeSimilarity = function(X, geneticRel = TRUE){
 }
 
 
-# Functions to calculate sigma error using h2 when simulating data
+##' Functions to calculate sigma error using h2 when simulating data
 ##' @author  Jemay SALOMON
 sigmaE <- function(sigma, h2){
   if(!is.numeric(sigma)){
@@ -132,7 +131,7 @@ sigmaE <- function(sigma, h2){
   return(((1 - h2) /h2) * sigma)
 }
 
-# Functions to compute incidence matrix
+##' Functions to compute incidence matrix
 ##' @author  Jemay SALOMON
 
 mkZ <- function(df, colD) {
