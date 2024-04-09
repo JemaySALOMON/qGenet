@@ -38,7 +38,7 @@ The data and slides for the Phenomic Selection Workshop are sourced from the "at
 
 * Utils.R: This file contains utility functions used in the two Rmds
 
- * Please be aware that the Rmd and html files are in French.
+NB :  Please be aware that the Rmd and html files are in French.
 
 
 
