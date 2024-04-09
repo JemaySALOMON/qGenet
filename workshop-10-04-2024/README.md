@@ -19,8 +19,7 @@ The data and slides for the Phenomic Selection Workshop are sourced from the "at
 
 # Description of the files :
 
-* phenomicSelection_Workshop.pdf : The slides for the presentation
-
+* phenomicSelection_Workshop.pdf : The slides for the lectures 1 & 2
 * GenotypicData_subset.csv : the genotyping file (224 varieties, 10533 SNP)
 
 * NIRS_Dry.Rds :  The NIRS file: NIRS measured on the grains in the reference environment
