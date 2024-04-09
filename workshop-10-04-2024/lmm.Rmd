@@ -12,13 +12,13 @@ output:
     toc: true
     toc_depth: 3
     number_sections: TRUE
-abstract: |
-    Ce document vise à simuler des données et estimer les paramètres des modèles linéaires mixtes.
 editor_options: 
   chunk_output_type: inline
 ---
-
+<div align="justify">
 # NOTE 
+
+Ce document vise à simuler des données et estimer les paramètres des modèles linéaires mixtes.
 
 Le contenu de ce document est sous license [Creative Commons Attribution-ShareAlike 4.0 International](http://creativecommons.org/licenses/by-sa/4.0/).
 
@@ -29,6 +29,15 @@ Veuillez en prendre connaissance et vous y conformer (contactez l'auteur : Jemay
 ```{r}
 rm(list = ls())
 ```
+
+# IMPORTANT
+```{r}
+
+# definir votre chemin à vous
+setwd("/home/jemay/Documents/PhD_Jemay/qGenet/workshop-10-04-2024")
+
+```
+
 
 
 Ce document nécessitera également que des packages externes soient disponibles, par exemple :
@@ -121,7 +130,6 @@ source("utils.R") # loading functions
 ## Matériel végétal
 
 ```{r}
-# Plant materials
 S = 250 #nombre de génotypes de sorgho
 sorghos <- sprintf("sorgho%02d", 1:S) # créer des noms
 levContrast <- c("mu","block1")
@@ -286,13 +294,12 @@ TODO : simuler des génotypes/marqueurs génétiques et faire la prédiction gé
 
 * ...
 
-
+</div>
 # Annexe
-
-print(sessionInfo(), locale=FALSE)
 
 ```{r info}
 t1 <- proc.time(); t1 - t0
+print(sessionInfo(), locale=FALSE)
 ```
 
 

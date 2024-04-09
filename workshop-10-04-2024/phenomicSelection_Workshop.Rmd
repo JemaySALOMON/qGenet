@@ -16,7 +16,6 @@ output:
     toc_depth: 3
     number_sections: TRUE
 urlcolor: blue
-abstract:
 ---
 <div align="justify">
 
@@ -33,9 +32,11 @@ Des améliorations significatives ont été apportées par rapport aux ressource
 Il convient cependant de noter que cet atelier n'est pas affilié à aucun des organismes mentionnés précédemment. Toutes les informations fournies dans ce document sont sous la responsabilité exclusive de son distributeur, en l'occurrence Jemay SALOMON.
 
 
-# Directory
+# IMPORTANT
 ```{r}
-setwd("/home/jemay/Documents/PhD_Jemay/PS/phenomicSelectoWS")
+# definir votre chemin à vous
+setwd("/home/jemay/Documents/PhD_Jemay/qGenet/workshop-10-04-2024")
+
 ```
 
 
