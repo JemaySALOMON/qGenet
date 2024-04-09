@@ -1,9 +1,18 @@
 # Overview
 
+## workshop 10/04/2024
+
 This workshop is intended to be taught in two parts:
 
    a) Linear Mixed Model  
-   b)  Phenomic Selection  
+   b)  Phenomic Selection
+
+## Agenda for the Workshop
+
+Lecture 1 : Linear Mixed Models
+Lecture 2 : Phenomic Selection
+TD1       : Linear Mixed Models
+TD2       : Phenomic-genomic Selection
 
 The data and slides for the Phenomic Selection Workshop are sourced from the "atelier-prediction-genomique" repository, available at: https://github.com/JemaySALOMON/atelier-prediction-genomique. All contents within this repository are licensed under the Creative Commons Attribution-ShareAlike 4.0 International (CC BY-SA 4.0). Consequently, this license extends to all works associated with this workshop. Please review for compliance
 
