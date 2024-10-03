@@ -1,0 +1,305 @@
+---
+title: "LMM"
+author: "Jemay SALOMON"
+date: "`r format(Sys.time(), '%d/%m/%Y %H:%M:%S')`"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    toc_depth: 3
+    number_sections: TRUE
+  pdf_document:
+    toc: true
+    toc_depth: 3
+    number_sections: TRUE
+editor_options: 
+  chunk_output_type: inline
+---
+<div align="justify">
+# NOTE 
+
+Ce document vise à simuler des données et estimer les paramètres des modèles linéaires mixtes.
+
+Le contenu de ce document est sous license [Creative Commons Attribution-ShareAlike 4.0 International](http://creativecommons.org/licenses/by-sa/4.0/).
+
+Veuillez en prendre connaissance et vous y conformer (contactez l'auteur : Jemay SALOMON (jemay.salomon@inrae.fr))
+
+# Preamble
+
+```{r}
+rm(list = ls())
+```
+
+# IMPORTANT
+```{r}
+
+# definir votre chemin à vous
+setwd("/home/jemay/Documents/PhD_Jemay/qGenet/workshop-10-04-2024")
+
+```
+
+
+
+Ce document nécessitera également que des packages externes soient disponibles, par exemple :
+
+```{r}
+packages <- c("lme4", "rmarkdown")
+
+# Installer packages s'ils ne sont pas déjà installés
+for (package in packages) {
+  if (!requireNamespace(package, quietly = TRUE)) {
+    install.packages(package)
+  }
+  suppressPackageStartupMessages(library(package, character.only = TRUE))
+}
+```
+
+
+Temps d'exécution (voir l'annexe) :
+```{r time_0}
+t0 <- proc.time()
+```
+
+
+# Overview
+
+Ce script vise à simuler des données pour 250 génotypes de sorgho cultivés sur 2 blocs.
+
+Description :
+
+* 250 génotypes de sorgho
+
+* 2 blocs
+
+# Modèle
+
+
+## Forme scalaire : 
+
+$$y_{ikr}^{(s)} = \mu^{(s)} + \alpha_k + a_{G,i} + \epsilon^{(s)}_{ikr}$$
+
+* $y_{ikr}^{(s)}$ : rendement du génotype (s : sorgho) $i$ dans le bloc $k$ et répétition $r$
+
+* $\mu^{(s)}$ : rendement moyen de la population (intercept du modèle)
+
+* $\alpha_k$ : effet du bloc $k$ (Facteur fixe)  
+
+* $a_{G,i}$ : L'effet génétique direct du génotype de sorgho $i$ sur le rendement du sorgho (Facteur aléatoire)
+
+
+
+
+## Forme matricielle :
+
+$$\mathbf{y} = X\mathbf{b} +  Z\mathbf{a}_{G} + \mathbf{\epsilon}$$
+
+* $\mathbf{y}$ : vecteur des rendements (yield)
+
+
+* $X$ : matrice incidence pour les effets fixes
+
+
+* $\mathbf{b}$ : vecteur des effets fixes
+
+
+* $Z$ : matrice d'incidence pour les effets aléatoires
+
+
+* $\mathbf{a}_{G}$ : vecteurs des effets aléatoires (blup/valeur génétique propre dans ce cas)
+
+* $\mathbf{\epsilon}$ : vecteur des erreurs
+
+
+
+Avec : 
+
+* $\mathbf{a}_{G} \sim \mathcal{N}(0, \sigma^2_{G} Id)$  
+
+* $\epsilon \overset{iid}{\sim} \mathcal{N} (0, \sigma^2 \mathbf{I})$
+
+
+
+# Simulation
+
+## Importer les fonctions nécessaires
+
+```{r}
+source("utils.R") # loading functions
+```
+
+## Matériel végétal
+
+```{r}
+S = 250 #nombre de génotypes de sorgho
+sorghos <- sprintf("sorgho%02d", 1:S) # créer des noms
+levContrast <- c("mu","block1")
+```
+
+
+## Générer `data.frame`
+
+```{r}
+## blocks
+B <- 2 #nombre de blocs
+blocks <- LETTERS[1:B] # créer nom pour bloc
+levblocks <- blocks
+
+## créer data.frame
+dat.block1 <- data.frame(x=NA,
+                         y=NA,
+                         genotypes=c(sorghos),
+                         block=NA)
+dat <- dat.block1
+
+## reformat
+for(k in 2:B){ 
+  dat <- rbind(dat, dat.block1)
+}
+
+dat$block <- as.factor(rep(blocks, each=nrow(dat.block1)));  rm(dat.block1)
+dat$genotypes <- as.factor(dat$genotypes)
+
+n.bl = S
+nb=length(unique(dat$block))
+dat$x=c(rep(1, n.bl), rep(2,n.bl))
+dat$y=c(replicate(nb, sample(1:n.bl)))
+
+str(dat)
+
+```
+
+
+## Paramètres
+
+mu : rendement moyen de la population
+
+var_G : variance génétique
+
+var_E : variance erreur
+
+h2 : héritabilité (ici j'ai utilisé la valeur de l'héritabilité génomique possible sur certains environnements)
+
+block1 : (rendement moyen blockA - rendement moyen blockB)/2
+
+```{r}
+# true paramètres
+
+truth <- list(mu = 6, var_G = 2, block1 = 0.4, h2 = 0.8)
+
+truth[["var_E"]]= sigmaE(sigma = truth[["var_G"]], h2 = truth[["h2"]])
+```
+
+
+```{r}
+set.seed(1234) ## réplicables
+```
+
+
+```{r}
+blup <- rnorm(sorghos, mean = 0, sd= sqrt(truth[["var_G"]]))
+e <- rnorm(nrow(dat), mean = 0, sd= sqrt(truth[["var_E"]]))
+
+
+```
+
+```{r}
+#check
+var(blup)
+mean(blup)
+```
+
+
+# yield
+```{r}
+#list of Z
+listZs <- list()
+
+#matrix d'indicidence pour les effets aléas
+listZs[["Z"]] = mkZ(df = dat, colD = "genotypes")
+
+#matrix d'indicidence pour les effets fixes
+listZs[["X"]] = model.matrix(~ 1 + block, data=dat, contrasts.arg = list(block = "contr.sum"))
+
+#yield
+# y = X%*%b + Z%*%blup + e  //avec (b = c(mu, block1))
+
+y <- listZs[["X"]]%*%c(truth[["mu"]], truth[["block1"]])+listZs[["Z"]]%*%blup + e
+
+#ajouter yield
+dat$yield <- y[,1]
+
+```
+
+
+# Inference
+
+```{r}
+options(contrasts=c("contr.sum", "contr.poly"))
+```
+
+```{r}
+mod <- lmer(yield~1+block+(1|genotypes), data = dat)
+```
+
+
+# check
+```{r}
+cbind("true" = c(mu = truth[["mu"]],
+                 block1 = truth[["block1"]],
+                 var_G = truth[["var_G"]],
+                 var_E = truth[["var_E"]]),
+      
+      "lmer" = c((summary(mod)$coefficients)[,1][1],
+                 (summary(mod)$coefficients)[,1][2],
+                 VarCorr(mod)$genotypes[1],
+                 sigma(mod)^2))
+```
+
+
+# Héritabilité
+
+```{r}
+sigma2.geno=VarCorr(mod)$genotypes[1]
+sigma2.R=sigma(mod)^2
+H2=sigma2.geno / (sigma2.geno + sigma2.R)
+
+cbind("true"=truth[["h2"]],
+    "lmer"= H2)
+```
+
+TODO : vérifier la distribution des blups (effets aléatoires)
+
+* $\mathbf{a}_{G} \sim \mathcal{N}(0, \sigma^2_{G} Id)$
+
+
+TODO : calculer réponse à la sélection  
+
+Equation du sélectionneur : $R = h2S$
+  
+* R est la différence de moyenne de la population d’une génération à l’autre.
+
+* S se calcule comme la différence entre la moyenne des individus sélectionnés (parents de la
+génération t + 1) et la moyenne de la population à la génération t. 
+
+
+TODO : simuler des génotypes/marqueurs génétiques et faire la prédiction génomique avec les memes paramètres 
+
+* Architecture génétique du trait
+
+* SimulSnps
+
+* Reprendre les paramètres
+
+* SimulPhenos
+
+* ...
+
+</div>
+# Annexe
+
+```{r info}
+t1 <- proc.time(); t1 - t0
+print(sessionInfo(), locale=FALSE)
+```
+
+
