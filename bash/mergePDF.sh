@@ -4,6 +4,7 @@
 # Author  : Jemay SALOMON
 # Date    : 2025-10-10
 # Version : 1.0
+# License : MIT
 # ============================================================
 # Description:
 #   This script merges multiple PDF files into a single PDF file.

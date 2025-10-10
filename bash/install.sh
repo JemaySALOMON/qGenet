@@ -1,13 +1,34 @@
 #!/bin/bash
 # ============================================================
 # install - Global R package build/check/install helper
-# Author : Jemay SALOMON
-# Date   : 2025-10-10
+# Author  : Jemay SALOMON
+# Date    : 2025-10-10
+# Version : 1.0
+# License : MIT
 # ============================================================
-# Usage :
+# Description:
+#   This script automates the standard workflow for R package development.
+#   It can be executed from anywhere on your system and will:
+#     1. Clean old build artifacts and .Rcheck folders.
+#     2. Build the R package (.tar.gz) using `R CMD build`.
+#     3. Validate the package with `R CMD check`.
+#     4. Optionally install the package locally even if the check fails.
+#
+#   The script ensures a consistent, repeatable process for building and
+#   testing R packages, reducing manual steps and minimizing human error.
+#   It is particularly useful for developers maintaining multiple R packages
+#   or working on package automation pipelines.
+#
+# Usage:
 #   install /path/to/package
-# Example :
+#
+# Example:
 #   install ~/Documents/myPackage
+#
+# Notes:
+#   - Works system-wide if placed in /usr/local/bin or in ~/bin with PATH updated.
+#   - Requires R to be installed and accessible from the command line.
+#   - Safe to run multiple times; old builds are automatically cleaned.
 # ============================================================
 
 set -e  # Exit if any command fails
