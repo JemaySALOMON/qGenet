@@ -15,7 +15,7 @@ set -e  # Exit if any command fails
 
 if [ -z "$1" ]; then
   echo "❌ Error: please specify the path to the R package."
-  echo "Usage: check /path/to/package"
+  echo "Usage: R_CMD_install /path/to/package"
   exit 1
 fi
 
