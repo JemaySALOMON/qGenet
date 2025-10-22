@@ -4,6 +4,9 @@
 # Author : Jemay SALOMON
 # Date   : 2025-10-21
 # ============================================================
+# Usage :
+#   R_CMD_check /path/to/package [--args "flags"] [--build_args "flags"]
+# ============================================================
 
 set -e  # Exit on error
 

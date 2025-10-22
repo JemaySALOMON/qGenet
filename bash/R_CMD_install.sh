@@ -6,9 +6,7 @@
 # Date   : 2025-10-10
 # ============================================================
 # Usage :
-#   R_CMD_install /path/to/package
-# Example :
-#  R_CMD_install ~/Documents/myPackage
+#   R_CMD_install /path/to/package [--args "flags"] [--build_args "flags"]
 # ============================================================
 
 set -e  # Exit on error
